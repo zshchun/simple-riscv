@@ -1,3 +1,4 @@
+        .global _start
 _start:
-        nop
-        j _start
+        jal main
+        j .
