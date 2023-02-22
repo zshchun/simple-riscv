@@ -4,16 +4,28 @@ ENTRY(_start)
 SECTIONS
 {
         . = 0x80000000;
+        _text = .;
         .text : {
                 *(.text)
         }
+        _text_end = .;
+        . = ALIGN(16);
+        _rodata = .;
         .rodata : {
                 *(.rodata)
         }
+        _rodata_end = .;
+        . = ALIGN(16);
+        _data = .;
         .data : {
                 *(.data)
         }
+        _data_end = .;
+        . = ALIGN(16);
+        _bss = .;
         .bss : {
-                *(.data)
+                *(.bss)
         }
+        _bss_end = .;
+        . = ALIGN(16);
 }
