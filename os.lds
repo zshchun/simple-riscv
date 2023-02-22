@@ -28,4 +28,5 @@ SECTIONS
         }
         _bss_end = .;
         . = ALIGN(16);
+        _stack = _text + (32*1024*1024);
 }

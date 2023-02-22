@@ -2,8 +2,9 @@
         .global _start
         .extern _bss
         .extern _bss_end
+        .extern _stack
 _start:
-        li sp, 0x82000000
+        la sp, _stack
         la a3, _bss
         la a4, _bss_end
         move a0, zero

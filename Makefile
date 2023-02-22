@@ -4,8 +4,14 @@ CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
 OBJS := boot.o main.o
 
-all: os.bin
+.PHONY: all build test
+
+all: build
+
+test: build
 	qemu-system-riscv64 -M virt -smp 1 -m 256M -bios none -kernel os.bin -nographic
+
+build: os.bin
 
 os.bin: $(OBJS)
 	$(LD) -T os.lds $^ -o os.elf
