@@ -2,6 +2,8 @@ OBJCOPY := riscv64-linux-gnu-objcopy
 AS := riscv64-linux-gnu-as
 CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
+RUSTC := rustc
+#OBJS := boot.o main.o mod.o
 OBJS := boot.o main.o
 CFLAGS := -O2
 
@@ -27,6 +29,9 @@ os.bin: $(OBJS)
 
 %.o: %.c $(FORCE) FORCE
 	$(CC) $(CFLAGS) -W -Wall -std=c11 -c -nostartfiles -nostdlib $< -o $@
+
+#%.o: %.rs $(FORCE) FORCE
+#	$(RUSTC) --target=riscv64gc-unknown-none-elf --emit obj $< -o $@
 
 %.o: %.S $(FORCE) FORCE
 	$(AS) $< -o $@

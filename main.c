@@ -6,21 +6,23 @@
 #define REG(addr) ((volatile unsigned char*)(addr))
 
 char array[128];
+extern void rust_test();
 
-void uart_putc(char c) {
+void uart_putchar(char c) {
         while ((*REG(UART_BASE+LSR) & 1<<5) == 0) { ; }
         *REG(UART_BASE+THR) = c;
 }
 
-void print(char *s) {
+void uart_puts(char *s) {
         while (*s) {
-                uart_putc(*s);
+                uart_putchar(*s);
                 s++;
         }
 }
 
 int main() {
-        print("Hello World!\n");
+        uart_puts("Hello World!\n");
+//        rust_test();
         return 0;
 }
 
