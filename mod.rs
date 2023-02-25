@@ -1,15 +1,20 @@
 #![no_main]
-use std::ffi::CString;
-use std::os::raw::c_char;
+#![no_std]
+use core::panic::PanicInfo;
 
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+        loop {}
+}
+
+extern "C" {
+        fn uart_puts(input: *const u8);
+}
 #[no_mangle]
 pub extern "C" fn rust_test() {
-        extern "C" {
-                fn uart_puts(input: *const c_char);
-        }
+
+        const MSG: &'static str = "Hello Rust!\n\0";
         unsafe {
-//                uart_puts("Hello rust!\n".as_ptr());
-                let msg = CString::new("Hello rust!\n").unwrap();
-                uart_puts((&msg).as_ptr());
+                uart_puts(MSG.as_ptr());
         }
 }

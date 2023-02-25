@@ -21,8 +21,8 @@ void uart_puts(char *s) {
 }
 
 int main() {
+        rust_test();
         uart_puts("Hello World!\n");
-//        rust_test();
         return 0;
 }
 

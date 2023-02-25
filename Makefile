@@ -3,14 +3,12 @@ AS := riscv64-linux-gnu-as
 CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
 RUSTC := rustc
-#OBJS := boot.o main.o mod.o
-OBJS := boot.o main.o
+OBJS := boot.o main.o mod.o
 CFLAGS := -O2
 
 .PHONY: all build test debug FORCE
 
 all: build
-
 test: build
 	qemu-system-riscv64 -M virt -smp 1 -m 256M -bios none -kernel os.bin -nographic
 
@@ -30,8 +28,8 @@ os.bin: $(OBJS)
 %.o: %.c $(FORCE) FORCE
 	$(CC) $(CFLAGS) -W -Wall -std=c11 -c -nostartfiles -nostdlib $< -o $@
 
-#%.o: %.rs $(FORCE) FORCE
-#	$(RUSTC) --target=riscv64gc-unknown-none-elf --emit obj $< -o $@
+%.o: %.rs $(FORCE) FORCE
+	$(RUSTC) --target=riscv64gc-unknown-none-elf --emit obj $< -o $@
 
 %.o: %.S $(FORCE) FORCE
 	$(AS) $< -o $@
