@@ -1,31 +1,35 @@
 OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv", "elf64-littleriscv")
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
+MEMORY
+{
+        ram (rwx) : ORIGIN = 0x80000000, LENGTH = 64M
+}
 SECTIONS
 {
-        . = 0x80000000;
+        . = ORIGIN(ram);
         _text = .;
         .text : {
                 *(.text)
-        }
+        } > ram
         _text_end = .;
         . = ALIGN(16);
         _rodata = .;
         .rodata : {
                 *(.rodata)
-        }
+        } > ram
         _rodata_end = .;
         . = ALIGN(16);
         _data = .;
         .data : {
                 *(.data)
-        }
+        } > ram
         _data_end = .;
         . = ALIGN(16);
         _bss = .;
         .bss : {
                 *(.bss)
-        }
+        } > ram
         _bss_end = .;
         . = ALIGN(16);
         _stack = _text + (32*1024*1024);
