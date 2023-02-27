@@ -8,6 +8,7 @@ int main(int hart_id) {
                         __asm__ __volatile__("wfi");
                 }
         }
+        uart_init();
         rust_test();
         uart_puts("Hello World!\n");
         return 0;
