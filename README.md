@@ -31,3 +31,5 @@ make debug
 ```
 make gdb
 ```
+
+Quit: Ctrl-a x
