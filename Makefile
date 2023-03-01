@@ -6,22 +6,27 @@ RUSTC := rustc
 OBJS := boot.o uart.o main.o mod.o
 CFLAGS += -O2 -W -Wall -std=c11 -c -ffreestanding -nostartfiles -nostdlib
 LDFLAGS += --no-warn-rwx-segments
+MACHINE := virt
 CPUS := 2
 
 .PHONY: all build test debug FORCE
 
 all: build
 test: build
-	qemu-system-riscv64 -M virt -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic
+	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic
 
 build: os.bin
 
 debug: CFLAGS += -g
 debug: build
-	qemu-system-riscv64 -M virt -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -S -s
+	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -S -s
 
 gdb:
 	gdb-multiarch -ex 'file os.elf' -ex 'target remote localhost:1234'
+
+dts:
+	qemu-system-riscv64 -M $(MACHINE) -M dumpdtb=$(MACHINE).dtb
+	dtc -I dtb -O dts -o $(MACHINE).dts $(MACHINE).dtb
 
 os.bin: $(OBJS)
 	$(LD) $(LDFLAGS) -T os.lds $^ -o os.elf
