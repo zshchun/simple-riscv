@@ -13,6 +13,9 @@ int main(int hart_id) {
         }
         uart_init();
         rust_test();
+        memset(arr, 'A', 10);
+        arr[10] = '\n';
+        uart_puts(arr);
         memcpy(arr, test_str, sizeof(test_str));
         uart_puts(arr);
         uart_puts("Hello World!\n");
