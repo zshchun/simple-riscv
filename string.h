@@ -24,4 +24,23 @@ void *memset(void *s, int c, size_t n) {
         return s;
 }
 
+char *strcpy(char *dst, const char *src) {
+        while (*src) {
+                *dst = *src;
+                src++;
+                dst++;
+        }
+        *dst = '\0';
+        return dst;
+}
+
+size_t strlen(const char *s) {
+        size_t size = 0;
+        while (*s) {
+                s++;
+                size++;
+        }
+        return size;
+}
+
 #endif

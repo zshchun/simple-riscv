@@ -3,7 +3,7 @@
 
 extern void rust_test();
 char arr[128];
-char test_str[] = "memcpy test\n";
+char test_str[] = "strcpy test\n";
 
 int main(int hart_id) {
         if (hart_id) {
@@ -13,10 +13,10 @@ int main(int hart_id) {
         }
         uart_init();
         rust_test();
-        memset(arr, 'A', 10);
-        arr[10] = '\n';
+        memset(arr, 'A', 20);
+        arr[20] = '\n';
         uart_puts(arr);
-        memcpy(arr, test_str, sizeof(test_str));
+        strcpy(arr, test_str);
         uart_puts(arr);
         uart_puts("Hello World!\n");
         return 0;
