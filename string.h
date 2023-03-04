@@ -43,4 +43,16 @@ size_t strlen(const char *s) {
         return size;
 }
 
+int strcmp(const char *s1, const char *s2) {
+        int ret;
+        while (*s1 || *s2) {
+                ret = *s1 - *s2;
+                if (ret)
+                        return ret;
+                s1++;
+                s2++;
+        }
+        return ret;
+}
+
 #endif
