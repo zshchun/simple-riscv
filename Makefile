@@ -3,23 +3,23 @@ AS := riscv64-linux-gnu-as
 CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
 RUSTC := rustc
-OBJS := boot.o uart.o main.o mod.o
+OBJS := boot.o uart.o main.o mod.o string.o shell.o
 CFLAGS += -O2 -W -Wall -std=c11 -c -ffreestanding -nostartfiles -nostdlib
 LDFLAGS += --no-warn-rwx-segments
 MACHINE := virt
 CPUS := 2
 
-.PHONY: all build test debug FORCE
+.PHONY: all build test debug shell FORCE
 
 all: build
 test: build
-	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic
+	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -serial mon:stdio
 
 build: os.bin
 
 debug: CFLAGS += -g
 debug: build
-	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -S -s
+	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -serial mon:stdio -S -s
 
 gdb:
 	gdb-multiarch -ex 'file os.elf' -ex 'target remote localhost:1234'
