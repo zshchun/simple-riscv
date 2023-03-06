@@ -55,4 +55,26 @@ int strcmp(const char *s1, const char *s2) {
         return ret;
 }
 
+char* lltoa(unsigned long long val, char *buf, int radix) {
+        int i = 0, j, x;
+        char c;
+        while (val) {
+                x = val % radix;
+                val /= radix;
+                if (x < 10)
+                        buf[i] = x + '0';
+                else
+                        buf[i] = x + 'a';
+                i++;
+        }
+        buf[i--] = '\0';
+        if (i < 0)
+                return buf;
+        for (j=0;j<i/2;j++) {
+                c = buf[j];
+                buf[j] = buf[i-j];
+                buf[i-j] = c;
+        }
+        return buf;
+}
 #endif

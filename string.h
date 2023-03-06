@@ -7,5 +7,6 @@ void *memset(void *s, int c, size_t n);
 char *strcpy(char *dst, const char *src);
 size_t strlen(const char *s);
 int strcmp(const char *s1, const char *s2);
+char* lltoa(unsigned long long val, char *buf, int radix);
 
 #endif

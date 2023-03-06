@@ -1,6 +1,7 @@
 #include "uart.h"
 #include "string.h"
 #include "shell.h"
+#include "timer.c"
 
 extern void rust_test();
 char arr[128];
@@ -20,6 +21,7 @@ int main(int hart_id) {
         strcpy(arr, test_str);
         uart_puts(arr);
         uart_puts("Hello World!\n");
+        timer_read();
         run_shell();
         return 0;
 }

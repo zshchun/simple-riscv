@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include "reg.h"
 #define UART_BASE 0x10000000
 #define THR 0
 #define RHR 0
@@ -6,9 +7,9 @@
 #define FCR 2
 #define LCR 3
 #define LSR 5
-#define UART_REG(addr) ((volatile unsigned char*)(UART_BASE+addr))
-#define UART_WRITE(addr, val) (*UART_REG(addr) = val)
-#define UART_READ(addr) (*UART_REG(addr))
+#define UART_WRITE(addr, val) WRITE_REG(UART_BASE, addr, val, unsigned char)
+#define UART_READ(addr) READ_REG(UART_BASE, addr, unsigned char)
+
 
 void uart_putchar(char c) {
         while ((UART_READ(LSR) & 1<<5) == 0) { ; }
