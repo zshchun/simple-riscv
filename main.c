@@ -1,15 +1,19 @@
 #include "uart.h"
 #include "string.h"
 #include "shell.h"
-#include "timer.c"
+#include "spinlock.h"
+#include "timer.h"
 
 extern void rust_test();
 char arr[128];
 char test_str[] = "strcpy test\n";
 
+int lock = 0;
+
 int main(int hart_id) {
         if (hart_id) {
                 while (1) {
+                        spin_lock(&lock);
                         __asm__ __volatile__("wfi");
                 }
         }
