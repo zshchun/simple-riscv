@@ -3,6 +3,6 @@
 
 #define REG(base, addr, type) ((volatile type*)(base+addr))
 
-#define WRITE_REG(base, addr, val, type) (*REG(base, addr, type) = val)
-#define READ_REG(base, addr, type) (*REG(base, addr, type))
+#define WRITE_REG(base, addr, val, type) (volatile type)(*REG(base, addr, type) = val)
+#define READ_REG(base, addr, type) (volatile type)(*REG(base, addr, type))
 #endif

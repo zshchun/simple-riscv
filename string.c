@@ -67,13 +67,13 @@ char* lltoa(unsigned long long val, char *buf, int radix) {
                         buf[i] = x + 'a';
                 i++;
         }
-        buf[i--] = '\0';
-        if (i < 0)
+        buf[i] = '\0';
+        if (i <= 0)
                 return buf;
         for (j=0;j<i/2;j++) {
                 c = buf[j];
-                buf[j] = buf[i-j];
-                buf[i-j] = c;
+                buf[j] = buf[i-j-1];
+                buf[i-j-1] = c;
         }
         return buf;
 }

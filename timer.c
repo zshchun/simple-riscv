@@ -7,8 +7,18 @@
 #define TIMER_READ(addr) READ_REG(TIMER_BASE, addr, unsigned int)
 
 unsigned long long timer_read() {
-        unsigned long long high = TIMER_READ(RTC_TIME_HIGH);
         unsigned long long low = TIMER_READ(RTC_TIME_LOW);
+        unsigned long long high = TIMER_READ(RTC_TIME_HIGH);
         unsigned long long t = (high << 32) | low;
         return t;
+}
+void nanosleep(unsigned long long nsec) {
+        unsigned long long t = timer_read();
+        while (timer_read() - t < nsec)
+                ;
+}
+void sleep(unsigned long long sec) {
+        unsigned long long t = timer_read();
+        while ((timer_read() - t) < sec * 1000000000ULL)
+                ;
 }

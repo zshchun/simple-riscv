@@ -12,8 +12,10 @@ int lock = 0;
 
 int main(int hart_id) {
         if (hart_id) {
+                spin_lock(&lock);
                 while (1) {
-                        spin_lock(&lock);
+                        sleep(2);
+                        spin_unlock(&lock);
                         __asm__ __volatile__("wfi");
                 }
         }
@@ -24,8 +26,8 @@ int main(int hart_id) {
         uart_puts(arr);
         strcpy(arr, test_str);
         uart_puts(arr);
+        spin_lock(&lock);
         uart_puts("Hello World!\n");
-        timer_read();
         run_shell();
         return 0;
 }
