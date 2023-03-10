@@ -5,6 +5,7 @@
 #include "timer.h"
 
 extern void rust_test();
+extern void asm_test();
 int lock = 0;
 
 int main(int hart_id) {
@@ -15,6 +16,7 @@ int main(int hart_id) {
                         __asm__ __volatile__("wfi");
                 }
         }
+        asm_test();
         uart_init();
         rust_test();
         uart_puts("Hello World!\n");

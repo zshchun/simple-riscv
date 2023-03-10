@@ -3,7 +3,7 @@ AS := riscv64-linux-gnu-as
 CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
 RUSTC := rustc
-OBJS := boot.o uart.o main.o mod.o string.o shell.o timer.o spinlock.o
+OBJS := boot.o uart.o main.o mod.o string.o shell.o timer.o spinlock.o asm.o
 CFLAGS += -O2 -W -Wall -std=c11 -c -ffreestanding -nostartfiles -nostdlib
 LDFLAGS += --no-warn-rwx-segments
 MACHINE := virt
