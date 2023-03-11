@@ -10,6 +10,8 @@ char test_str[] = "strcpy test\n";
 void help() {
         uart_puts("List commands\n");
         uart_puts("help : help commands\n");
+        uart_puts("test : test commands\n");
+        uart_puts("echo : echo message\n");
 }
 void test() {
         char arr[64];
@@ -33,6 +35,9 @@ void run_shell() {
                         help();
                 } else if (!strcmp(cmd_buf, "test")) {
                         test();
+                } else if (!memcmp(cmd_buf, "echo", sizeof("echo")-1)) {
+                        uart_puts(cmd_buf+5);
+                        uart_putchar('\n');
                 }
                 uart_putchar('\n');
         }

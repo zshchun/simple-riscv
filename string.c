@@ -55,6 +55,15 @@ int strcmp(const char *s1, const char *s2) {
         return ret;
 }
 
+int memcmp(const char *s1, const char *s2, size_t n) {
+        int ret = 0;
+        size_t i;
+        for (i=0;i<n;i++,s1++,s2++) {
+                ret = *s1 - *s2;
+        }
+        return ret;
+}
+
 char* lltoa(unsigned long long val, char *buf, int radix) {
         int i = 0, j, x;
         char c;
