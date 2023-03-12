@@ -3,23 +3,26 @@ AS := riscv64-linux-gnu-as
 CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
 RUSTC := rustc
-OBJS := boot.o uart.o main.o mod.o string.o shell.o timer.o spinlock.o asm.o
+OUT := out
+OBJS := $(OUT)/boot.o $(OUT)/uart.o $(OUT)/main.o $(OUT)/mod.o $(OUT)/string.o $(OUT)/shell.o $(OUT)/timer.o $(OUT)/spinlock.o $(OUT)/asm.o
 CFLAGS += -O2 -W -Wall -std=c11 -c -ffreestanding -nostartfiles -nostdlib
 LDFLAGS += --no-warn-rwx-segments
 MACHINE := virt
+SRCDIR := src
+INCDIR := include
 CPUS := 2
 
 .PHONY: all build test debug shell FORCE
 
 all: build
 test: build
-	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -serial mon:stdio
+	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel $(OUT)/os.bin -nographic -serial mon:stdio
 
-build: os.bin
+build: $(OUT)/os.bin
 
 debug: CFLAGS += -g
 debug: build
-	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel os.bin -nographic -serial mon:stdio -S -s
+	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel $(OUT)/os.bin -nographic -serial mon:stdio -S -s
 
 gdb:
 	gdb-multiarch -ex 'file os.elf' -ex 'target remote localhost:1234'
@@ -28,20 +31,24 @@ dts:
 	qemu-system-riscv64 -M $(MACHINE) -M dumpdtb=$(MACHINE).dtb
 	dtc -I dtb -O dts -o $(MACHINE).dts $(MACHINE).dtb
 
-os.bin: $(OBJS)
-	$(LD) $(LDFLAGS) -T os.lds $^ -o os.elf
-	$(OBJCOPY) -O binary os.elf $@
+$(OUT)/os.bin: $(OBJS)
+	@mkdir -p $(OUT)
+	$(LD) $(LDFLAGS) -T $(SRCDIR)/os.lds $^ -o $(OUT)/os.elf
+	$(OBJCOPY) -O binary $(OUT)/os.elf $@
 
-%.o: %.c $(FORCE) FORCE
-	$(CC) $(CFLAGS) $< -o $@
+$(OUT)/%.o: $(SRCDIR)/%.c $(FORCE) FORCE
+	@mkdir -p $(OUT)
+	$(CC) -I$(INCDIR) $(CFLAGS) $< -o $@
 
-%.o: %.rs $(FORCE) FORCE
+$(OUT)/%.o: $(SRCDIR)/%.rs $(FORCE) FORCE
+	@mkdir -p $(OUT)
 	$(RUSTC) --target=riscv64gc-unknown-none-elf --emit obj $< -o $@
 
-%.o: %.S $(FORCE) FORCE
+$(OUT)/%.o: $(SRCDIR)/%.S $(FORCE) FORCE
+	@mkdir -p $(OUT)
 	$(AS) $< -o $@
 
 clean:
-	rm -f *.o *.bin *.elf
+	rm -f $(OUT)/*.o $(OUT)/*.bin $(OUT)/*.elf
 
 FORCE:

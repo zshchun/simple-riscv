@@ -3,3 +3,5 @@
 *.elf
 *.dtb
 *.dts
+out
+out/*
