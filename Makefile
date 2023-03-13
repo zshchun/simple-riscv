@@ -8,10 +8,12 @@ RUSTC := rustc
 OUT := out
 SRCDIR := src
 INCDIR := include
-SRCS := $(wildcard $(SRCDIR)/*.c $(SRCDIR)/*.rs $(SRCDIR)/*.S)
-#OBJS := $(patsubst %.c,%.o,$(patsubst %.c,%.o,$(patsubst %.c,%.o,$(SRCS))))
-#OBJS := $(patsubst %.c,%.o,$(SRCS))
-OBJS := $(OUT)/boot.o $(OUT)/uart.o $(OUT)/main.o $(OUT)/mod.o $(OUT)/string.o $(OUT)/shell.o $(OUT)/timer.o $(OUT)/spinlock.o $(OUT)/asm.o
+C_SRCS := $(wildcard $(SRCDIR)/*.c)
+C_OBJS := $(addprefix $(OUT)/,$(notdir $(C_SRCS:%.c=%.o)))
+RUST_SRCS := $(wildcard $(SRCDIR)/*.rs)
+RUST_OBJS := $(addprefix $(OUT)/,$(notdir $(RUST_SRCS:%.rs=%.o)))
+ASM_SRCS := $(wildcard $(SRCDIR)/*.S)
+ASM_OBJS := $(addprefix $(OUT)/,$(notdir $(ASM_SRCS:%.S=%.o)))
 MACHINE := virt
 CPUS := 2
 
@@ -34,7 +36,8 @@ dts:
 	qemu-system-riscv64 -M $(MACHINE) -M dumpdtb=$(MACHINE).dtb
 	dtc -I dtb -O dts -o $(MACHINE).dts $(MACHINE).dtb
 
-$(OUT)/os.bin: $(OBJS)
+$(OUT)/os.bin: $(C_OBJS) $(RUST_OBJS) $(ASM_OBJS)
+	echo $^
 	@mkdir -p $(OUT)
 	$(LD) $(LDFLAGS) -T $(SRCDIR)/os.lds $^ -o $(OUT)/os.elf
 	$(OBJCOPY) -O binary $(OUT)/os.elf $@

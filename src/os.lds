@@ -10,6 +10,7 @@ SECTIONS
         . = ORIGIN(ram);
         _text = .;
         .text : {
+                *(.text.start)
                 *(.text)
         } > ram
         _text_end = .;

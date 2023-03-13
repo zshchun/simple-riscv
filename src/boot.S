@@ -1,4 +1,4 @@
-        .section .text
+        .section .text.start
         .global _start
         .extern _bss
         .extern _bss_end
