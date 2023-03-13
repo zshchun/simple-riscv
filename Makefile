@@ -2,14 +2,17 @@ OBJCOPY := riscv64-linux-gnu-objcopy
 AS := riscv64-linux-gnu-as
 CC := riscv64-linux-gnu-gcc
 LD := riscv64-linux-gnu-ld
-RUSTC := rustc
-OUT := out
-OBJS := $(OUT)/boot.o $(OUT)/uart.o $(OUT)/main.o $(OUT)/mod.o $(OUT)/string.o $(OUT)/shell.o $(OUT)/timer.o $(OUT)/spinlock.o $(OUT)/asm.o
 CFLAGS += -O2 -W -Wall -std=c11 -c -ffreestanding -nostartfiles -nostdlib
 LDFLAGS += --no-warn-rwx-segments
-MACHINE := virt
+RUSTC := rustc
+OUT := out
 SRCDIR := src
 INCDIR := include
+SRCS := $(wildcard $(SRCDIR)/*.c $(SRCDIR)/*.rs $(SRCDIR)/*.S)
+#OBJS := $(patsubst %.c,%.o,$(patsubst %.c,%.o,$(patsubst %.c,%.o,$(SRCS))))
+#OBJS := $(patsubst %.c,%.o,$(SRCS))
+OBJS := $(OUT)/boot.o $(OUT)/uart.o $(OUT)/main.o $(OUT)/mod.o $(OUT)/string.o $(OUT)/shell.o $(OUT)/timer.o $(OUT)/spinlock.o $(OUT)/asm.o
+MACHINE := virt
 CPUS := 2
 
 .PHONY: all build test debug shell FORCE
