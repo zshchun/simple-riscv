@@ -18,5 +18,15 @@ init_bss:
         addi a3, a3, 1
         bne a3, a4, init_bss
 3:
+;        la a0, trap_entry
+;        csrw mtvec, a0
+;        lla a0, 2f
+;        csrw mepc, a0
+;        mret
+;2:
+
         jal main
         j .
+
+trap_entry:
+        jal trap_handler 

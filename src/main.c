@@ -7,6 +7,10 @@
 extern void rust_test();
 extern void asm_test();
 int lock = 0;
+void trap_handler() {
+        uart_puts("Trap!\n");
+        while (1) { ; }
+}
 
 int main(int hart_id) {
         if (hart_id) {
