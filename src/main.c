@@ -1,6 +1,8 @@
 #include "uart.h"
+#include "stdio.h"
 #include "string.h"
 #include "shell.h"
+#include "stdio.h"
 #include "spinlock.h"
 #include "timer.h"
 
@@ -24,6 +26,7 @@ int main(int hart_id) {
         uart_init();
         rust_test();
         uart_puts("Hello World!\n");
+        printf("printf %s%c\n", "test", '!');
         run_shell();
         return 0;
 }
