@@ -1,6 +1,7 @@
 #ifndef STRING_H_
 #define STRING_H_
 #include <stddef.h>
+#include <stdbool.h>
 
 void *memcpy(void *dest, const void *src, size_t n) {
         unsigned char *s = (void*)src;
@@ -64,6 +65,36 @@ int memcmp(const char *s1, const char *s2, size_t n) {
         return ret;
 }
 
+char* itoa(int val, char *buf, int radix) {
+        int i = 0, j, x;
+        char c;
+        bool neg = false;
+        if (val < 0) {
+                neg = true;
+                val = (~val) + 1;
+        }
+        while (val) {
+                x = val % radix;
+                val /= radix;
+                if (x < 10)
+                        buf[i] = x + '0';
+                else
+                        buf[i] = x - 10 + 'a';
+                i++;
+        }
+        if (neg)
+                buf[i++] = '-';
+        buf[i] = '\0';
+        if (i <= 0)
+                return buf;
+        for (j=0;j<i/2;j++) {
+                c = buf[j];
+                buf[j] = buf[i-j-1];
+                buf[i-j-1] = c;
+        }
+        return buf;
+}
+
 char* lltoa(unsigned long long val, char *buf, int radix) {
         int i = 0, j, x;
         char c;
@@ -73,7 +104,7 @@ char* lltoa(unsigned long long val, char *buf, int radix) {
                 if (x < 10)
                         buf[i] = x + '0';
                 else
-                        buf[i] = x + 'a';
+                        buf[i] = x - 10 + 'a';
                 i++;
         }
         buf[i] = '\0';

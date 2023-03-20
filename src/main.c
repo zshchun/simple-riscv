@@ -26,7 +26,7 @@ int main(int hart_id) {
         uart_init();
         rust_test();
         uart_puts("Hello World!\n");
-        printf("printf %s%c\n", "test", '!');
+        printf("printf %s%c %d %d %u 0x%x\n", "test", '!', -1234, 1234, 5678, 0xabcd);
         run_shell();
         return 0;
 }
