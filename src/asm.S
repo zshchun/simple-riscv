@@ -16,9 +16,11 @@ spin_lock_asm:
 1:
         amoswap.w.aq t0, t0, 0(a0)
         bnez t0, 1b
+        ret
 
 spin_unlock_asm:
         amoswap.w.rl zero, zero, 0(a0)
+        ret
 
         .section .rodata
 text1:

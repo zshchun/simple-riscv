@@ -18,11 +18,12 @@ void trap_handler() {
 
 int main(int hart_id) {
         if (hart_id) {
-                spin_lock(&lock);
+                //spin_lock(&lock);
+                spin_lock_asm(&lock);
                 while (1) {
                         sleep(1);
-                        spin_unlock(&lock);
-                        //spin_unlock_asm(&lock);
+                        //spin_unlock(&lock);
+                        spin_unlock_asm(&lock);
                         __asm__ __volatile__("wfi");
                 }
         }
