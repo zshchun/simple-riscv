@@ -1,5 +1,7 @@
 #include "scheduler.h"
 void sched(task_t *task) {
-//        __asm__ volatile( "la t0, (%0)\n"
-//        : : "p" (task->reg.a0) : "memory");
+        register unsigned int sp __asm__("sp");
+        task_t *context = (sp & ~8191);
+        __asm__ __volatile__( "sd ra, 0(sp)\n"
+        : : "r" (context) : "memory");
 }

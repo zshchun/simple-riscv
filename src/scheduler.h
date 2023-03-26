@@ -8,7 +8,9 @@ typedef struct __regs {
         uint64_t a5;
         uint64_t a6;
 } regs_t;
+
 typedef struct __task {
         regs_t reg;
 } task_t;
+
 void sched(task_t *task);
