@@ -1,5 +1,12 @@
         .global sched
+        .global save_context
+        .global restore_context
 sched:
+        jal save_context
+        jal restore_context
+        ret
+
+save_context:
         addi sp, sp, -64
         sd fp, 0(sp)
         mv fp, sp
@@ -37,3 +44,5 @@ sched:
         sd t5, 16(sp)
         sd t6, 16(sp)
         ret
+
+restore_context:
