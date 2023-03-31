@@ -12,8 +12,8 @@ extern void spin_lock_asm(int *lock);
 extern void spin_unlock_asm(int *lock);
 int lock = 0;
 void trap_handler() {
-        uart_puts("Trap!\n");
-        while (1) { ; }
+        uart_puts(".");
+//        while (1) { ; }
 }
 
 int main(int hart_id) {

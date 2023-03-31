@@ -44,7 +44,6 @@ save_context:
         sd  t4, 224(fp)
         sd  t5, 232(fp)
         sd  t6, 240(fp)
-        // TODO PC
         ret
 
 restore_context:
@@ -83,7 +82,7 @@ restore_context:
         ld  t0, 32(fp)
         ld  tp, 24(fp)
         ld  gp, 16(fp)
-//        ld  sp, 8(fp)
+;        ld  sp, 8(fp)
         ld  ra, 0(fp)
 
         ret
