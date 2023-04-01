@@ -2,6 +2,7 @@
         .global save_context
         .global restore_context
 sched:
+        ret
         jal save_context
         jal restore_context
         ret

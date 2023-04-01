@@ -10,9 +10,10 @@ extern void rust_test();
 extern void asm_test();
 extern void spin_lock_asm(int *lock);
 extern void spin_unlock_asm(int *lock);
+extern void sched();
 int lock = 0;
 void trap_handler() {
-        uart_puts(".");
+//        sched();
 //        while (1) { ; }
 }
 
@@ -31,7 +32,7 @@ int main(int hart_id) {
         uart_init();
         rust_test();
         uart_puts("Hello World!\n");
-        spin_lock(&lock);
+ //       spin_lock(&lock);
         printf("printf %s%c %d %d %u 0x%x\n", "test", '!', -1234, 1234, 5678, 0xabcd);
         run_shell();
         return 0;
