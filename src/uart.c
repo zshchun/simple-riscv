@@ -33,8 +33,15 @@ char* uart_gets(char *s, size_t n) {
         for (i=0;i<n-1;i++) {
                 s[i] = uart_getchar();
                 uart_putchar(s[i]);
-                if (s[i] == '\n' || s[i] == '\r' || s[i] == '\0')
+                if (s[i] == '\n' || s[i] == '\r' || s[i] == '\0') {
                         break;
+                } else if (s[i] == 127 || s[i] == 8) {
+                        if (i > 0) {
+                                uart_puts("\b \b");
+                                s[i] = '\0';
+                                i -= 2;
+                        }
+                }
         }
         s[i] = '\0';
         return s;

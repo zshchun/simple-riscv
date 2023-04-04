@@ -36,8 +36,8 @@ void run_shell() {
                 } else if (!strcmp(cmd_buf, "test")) {
                         test();
                 } else if (!memcmp(cmd_buf, "echo", sizeof("echo")-1)) {
-                        uart_puts(cmd_buf+5);
                         uart_putchar('\n');
+                        uart_puts(cmd_buf+5);
                 }
                 uart_putchar('\n');
         }
