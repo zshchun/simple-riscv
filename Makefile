@@ -15,7 +15,7 @@ RUST_OBJS := $(addprefix $(OUT)/,$(notdir $(RUST_SRCS:%.rs=%.o)))
 ASM_SRCS := $(wildcard $(SRCDIR)/*.S)
 ASM_OBJS := $(addprefix $(OUT)/,$(notdir $(ASM_SRCS:%.S=%.o)))
 MACHINE := virt
-CPUS := 2
+CPUS := 1
 
 .PHONY: all build test debug shell FORCE
 

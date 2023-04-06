@@ -26,6 +26,13 @@ SECTIONS
                 *(.data)
         } > ram
         _data_end = .;
+        _sdata = .;
+        .sdata : {
+                PROVIDE(__global_pointer$ = . + 0x800);
+                *(.sdata)
+        } > ram
+        _sdata_end = .;
+
         . = ALIGN(16);
         _bss = .;
         .bss : {
