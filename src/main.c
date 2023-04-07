@@ -14,7 +14,7 @@ extern void sched();
 int lock = 0;
 void trap_handler() {
 //        sched();
-//        uart_putchar('.');
+        uart_putchar('.');
 //        while (1) { ; }
 }
 

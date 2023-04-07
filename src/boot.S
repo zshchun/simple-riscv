@@ -65,12 +65,12 @@ trap_entry:
         sd  t5, 14*8(sp)
         sd  t6, 15*8(sp)
 
-        jal trap_handler 
+        csrr t0, mie
+        li t1, 128
+        or t0, t0, t1
+        csrw mie, t0
 
-;        csrr t0, mie
-;        li t1, 128
-;        or t0, t0, t1
-;        csrw mie, t0
+        jal trap_handler 
 
         csrr t0, mepc
         addi t0, t0, 0x4
