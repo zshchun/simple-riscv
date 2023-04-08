@@ -29,8 +29,8 @@ int main(int hart_id) {
 //                        __asm__ __volatile__("wfi");
 //                }
 //        }
-        asm_test();
         uart_init();
+        asm_test();
         rust_test();
         uart_puts("Hello World!\n");
  //       spin_lock(&lock);
