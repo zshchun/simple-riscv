@@ -29,10 +29,19 @@ init_bss:
 #        or t0, t0, t1
 #        csrw mstatus, t0
 
-        li t0, 0x200bff8
-        li t2, 0x2004000
-        ld t1, 0(t0)
-        li t3, 200000
+        la t0, trap_entry
+        csrw mtvec, t0
+        lla t0, 2f
+        csrw mepc, t0
+        mret
+
+2:
+        li t0, 0x2007ff8
+        li t2, 0x2000000
+#        li t0, 0x200bff8
+#        li t2, 0x2004000
+        ld t1, 0(t2)
+        li t3, 0x500000
         add t1, t1, t3
         sd t3, 0(t2)
 
@@ -41,20 +50,13 @@ init_bss:
         or t0, t0, t1
         csrw mie, t0
 
-        la t0, trap_entry
-        csrw mtvec, t0
-        la t0, 2f
-        csrw mepc, t0
-        mret
-
-2:
         jal main
         j .
 
 .align 4
 trap_entry:
         addi sp, sp, -(17*8)
-        sd  ra, 16*8(sp)
+        sd  ra, 0*8(sp)
         sd  a0, 1*8(sp)
         sd  a1, 2*8(sp)
         sd  a2, 3*8(sp)
@@ -71,26 +73,31 @@ trap_entry:
         sd  t5, 14*8(sp)
         sd  t6, 15*8(sp)
 
-#        csrr t0, mcause
-#        blt t0, x0, 1f
+        jal trap_handler
+
+        csrr t0, mcause
+        blt t0, x0, 1f
 
         csrr t0, mepc
         addi t0, t0, 0x4
         csrw mepc, t0
+        j 2f
 1:
-        jal trap_handler
-
-        li t0, 0x200bff8
-        li t2, 0x2004000
-        ld t1, 0(t0)
-        li t3, 200000
+        li t0, 0x2007ff8
+        li t2, 0x2000000
+#        li t0, 0x200bff8
+#        li t2, 0x2004000
+        ld t1, 0(t2)
+        li t3, 0x500000
         add t1, t1, t3
         sd t3, 0(t2)
 
-        csrr t0, mie
-        li t1, 128
-        or t0, t0, t1
-        csrw mie, t0
+#        csrr t0, mie
+#        li t1, 128
+#        or t0, t0, t1
+#        csrw mie, t0
+
+2:
 
         ld  t6, 15*8(sp)
         ld  t5, 14*8(sp)
@@ -107,6 +114,6 @@ trap_entry:
         ld  a2, 3*8(sp)
         ld  a1, 2*8(sp)
         ld  a0, 1*8(sp)
-        ld  ra, 16*8(sp)
+        ld  ra, 0*8(sp)
         addi sp, sp, (17*8)
         mret
