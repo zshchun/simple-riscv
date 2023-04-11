@@ -4,7 +4,7 @@
         .extern _bss_end
         .extern _stack
 _start:
-        la gp, __global_pointer$
+#        la gp, __global_pointer$
 
         csrr a0, mhartid
         slli a1, a0, 13
@@ -21,13 +21,13 @@ init_bss:
         bne a3, a4, init_bss
 
 3:
-        csrr t0, mstatus
-        li t1, 6144
-        not t1, t1
-        and t0, t0, t1
-        li t1, 2048
-        or t0, t0, t1
-        csrw mstatus, t0
+#        csrr t0, mstatus
+#        li t1, 6144
+#        not t1, t1
+#        and t0, t0, t1
+#        li t1, 2048
+#        or t0, t0, t1
+#        csrw mstatus, t0
 
         li t0, 0xffff
         csrw medeleg, t0
@@ -43,7 +43,8 @@ init_bss:
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
-        li t3, 0x500000
+        fence i, i
+        li t3, 5000000
         add t1, t1, t3
         sd t3, 0(t2)
 
@@ -51,6 +52,8 @@ init_bss:
         li t1, 128
         or t0, t0, t1
         csrw mie, t0
+
+        csrsi mstatus, 8
 
         mret
 
@@ -93,7 +96,7 @@ trap_entry:
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
-        li t3, 0x500000
+        li t3, 500000
         add t1, t1, t3
         sd t3, 0(t2)
 
@@ -102,6 +105,7 @@ trap_entry:
         or t0, t0, t1
         csrw mie, t0
 
+        csrsi mstatus, 8
 2:
 
         ld  t6, 15*8(sp)
