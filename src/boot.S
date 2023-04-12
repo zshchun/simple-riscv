@@ -44,7 +44,7 @@ init_bss:
         li t2, 0x2004000
         ld t1, 0(t0)
         fence i, i
-        li t3, 5000000
+        li t3, 12000000
         add t1, t1, t3
         sd t3, 0(t2)
 
@@ -96,7 +96,7 @@ trap_entry:
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
-        li t3, 500000
+        li t3, 12000000
         add t1, t1, t3
         sd t3, 0(t2)
 
