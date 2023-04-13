@@ -58,12 +58,15 @@ init_bss:
         mret
 
 2:
+        fence i, i
+        fence
+        ecall
         jal main
         j .
 
 .align 4
 trap_entry:
-        addi sp, sp, -(17*8)
+        addi sp, sp, -(24*8)
         sd  ra, 0*8(sp)
         sd  a0, 1*8(sp)
         sd  a1, 2*8(sp)
@@ -80,6 +83,14 @@ trap_entry:
         sd  t4, 13*8(sp)
         sd  t5, 14*8(sp)
         sd  t6, 15*8(sp)
+
+        sd  s0, 16*8(sp)
+        sd  s1, 17*8(sp)
+        sd  s2, 18*8(sp)
+        sd  s3, 19*8(sp)
+        sd  s4, 20*8(sp)
+        sd  s5, 21*8(sp)
+        sd  s6, 22*8(sp)
 
         jal trap_handler
 
@@ -108,6 +119,14 @@ trap_entry:
         csrsi mstatus, 8
 2:
 
+        ld  s6, 22*8(sp)
+        ld  s5, 21*8(sp)
+        ld  s4, 20*8(sp)
+        ld  s3, 19*8(sp)
+        ld  s2, 18*8(sp)
+        ld  s1, 17*8(sp)
+        ld  s0, 16*8(sp)
+
         ld  t6, 15*8(sp)
         ld  t5, 14*8(sp)
         ld  t4, 13*8(sp)
@@ -124,5 +143,5 @@ trap_entry:
         ld  a1, 2*8(sp)
         ld  a0, 1*8(sp)
         ld  ra, 0*8(sp)
-        addi sp, sp, (17*8)
+        addi sp, sp, (24*8)
         mret
