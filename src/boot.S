@@ -21,13 +21,13 @@ init_bss:
         bne a3, a4, init_bss
 
 3:
-#        csrr t0, mstatus
-#        li t1, 6144
-#        not t1, t1
-#        and t0, t0, t1
-#        li t1, 2048
-#        or t0, t0, t1
-#        csrw mstatus, t0
+        csrr t0, mstatus
+        li t1, 6144
+        not t1, t1
+        and t0, t0, t1
+        li t1, 2048
+        or t0, t0, t1
+        csrw mstatus, t0
 
         li t0, 0xffff
         csrw medeleg, t0
@@ -38,8 +38,6 @@ init_bss:
         la t0, 2f
         csrw mepc, t0
 
-#        li t0, 0x2007ff8
-#        li t2, 0x2000000
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
@@ -102,8 +100,6 @@ trap_entry:
         csrw mepc, t0
         j 2f
 1:
-#        li t0, 0x2007ff8
-#        li t2, 0x2000000
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
