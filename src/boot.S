@@ -21,13 +21,13 @@ init_bss:
         bne a3, a4, init_bss
 
 3:
-        csrr t0, mstatus
-        li t1, 6144
-        not t1, t1
-        and t0, t0, t1
-        li t1, 2048
-        or t0, t0, t1
-        csrw mstatus, t0
+#        csrr t0, mstatus
+#        li t1, 6144
+#        not t1, t1
+#        and t0, t0, t1
+#        li t1, 2048
+#        or t0, t0, t1
+#        csrw mstatus, t0
 
         li t0, 0xffff
         csrw medeleg, t0
@@ -38,33 +38,31 @@ init_bss:
         la t0, 2f
         csrw mepc, t0
 
+        csrci mstatus, 8
+
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
-        fence i, i
-        li t3, 12000000
+        li t3, 5000000
         add t1, t1, t3
         sd t3, 0(t2)
+
+        csrsi mstatus, 8
 
         csrr t0, mie
         li t1, 128
         or t0, t0, t1
         csrw mie, t0
 
-        csrsi mstatus, 8
-
         mret
 
 2:
-        fence i, i
-        fence
-        ecall
         jal main
         j .
 
 .align 4
 trap_entry:
-        addi sp, sp, -(24*8)
+        addi sp, sp, -(17*8)
         sd  ra, 0*8(sp)
         sd  a0, 1*8(sp)
         sd  a1, 2*8(sp)
@@ -82,14 +80,7 @@ trap_entry:
         sd  t5, 14*8(sp)
         sd  t6, 15*8(sp)
 
-        sd  s0, 16*8(sp)
-        sd  s1, 17*8(sp)
-        sd  s2, 18*8(sp)
-        sd  s3, 19*8(sp)
-        sd  s4, 20*8(sp)
-        sd  s5, 21*8(sp)
-        sd  s6, 22*8(sp)
-
+        csrci mstatus, 8
         jal trap_handler
 
         csrr t0, mcause
@@ -103,25 +94,17 @@ trap_entry:
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
-        li t3, 12000000
+        li t3, 5000000
         add t1, t1, t3
         sd t3, 0(t2)
 
-        csrr t0, mie
-        li t1, 128
-        or t0, t0, t1
-        csrw mie, t0
+#        csrr t0, mie
+#        li t1, 128
+#        or t0, t0, t1
+#        csrw mie, t0
 
-        csrsi mstatus, 8
 2:
-
-        ld  s6, 22*8(sp)
-        ld  s5, 21*8(sp)
-        ld  s4, 20*8(sp)
-        ld  s3, 19*8(sp)
-        ld  s2, 18*8(sp)
-        ld  s1, 17*8(sp)
-        ld  s0, 16*8(sp)
+        csrsi mstatus, 8
 
         ld  t6, 15*8(sp)
         ld  t5, 14*8(sp)
@@ -139,5 +122,6 @@ trap_entry:
         ld  a1, 2*8(sp)
         ld  a0, 1*8(sp)
         ld  ra, 0*8(sp)
-        addi sp, sp, (24*8)
+        addi sp, sp, (17*8)
+
         mret
