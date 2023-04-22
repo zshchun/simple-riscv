@@ -47,6 +47,11 @@ init_bss:
         add t1, t1, t3
         sd t3, 0(t2)
 
+#       li t0, 0x1800
+#       csrc mstatus, t0
+#       li t0, 0x802
+#       csrs mstatus, t0
+
         csrsi mstatus, 8
 
         csrr t0, mie
@@ -80,7 +85,7 @@ trap_entry:
         sd  t5, 14*8(sp)
         sd  t6, 15*8(sp)
 
-        csrci mstatus, 8
+#        csrci mstatus, 8
         jal trap_handler
 
         csrr t0, mcause
@@ -102,9 +107,9 @@ trap_entry:
 #        li t1, 128
 #        or t0, t0, t1
 #        csrw mie, t0
+        csrsi mstatus, 8
 
 2:
-        csrsi mstatus, 8
 
         ld  t6, 15*8(sp)
         ld  t5, 14*8(sp)
