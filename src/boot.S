@@ -52,7 +52,7 @@ init_bss:
 #       li t0, 0x802
 #       csrs mstatus, t0
 
-#        csrsi mstatus, 8
+        csrsi mstatus, 8
 
         csrr t0, mie
         li t1, 128
@@ -95,7 +95,8 @@ trap_entry:
         csrr t0, mepc
         addi t0, t0, 0x4
         csrw mepc, t0
-#        csrsi mstatus, 8
+
+        csrsi mstatus, 8
         j 2f
 1:
 #        li t0, 0x200bff8
@@ -105,10 +106,10 @@ trap_entry:
 #        add t1, t1, t3
 #        sd t3, 0(t2)
 
-#        csrr t0, mie
-#        li t1, 128
-#        or t0, t0, t1
-#        csrw mie, t0
+        csrr t0, mie
+        li t1, 128
+        or t0, t0, t1
+        csrw mie, t0
 
 2:
 
