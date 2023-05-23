@@ -13,10 +13,12 @@ extern void spin_unlock_asm(int *lock);
 extern void sched();
 int lock = 0;
 int count = 0;
+//void trap_handler() __attribute__ ((interrupt));
+#pragma GCC optimize ("align-functions=4")
 void trap_handler() {
 //        sched();
-        count++;
-        if (count < 30)
+//        count++;
+//        if (count < 30)
                 uart_putchar('.');
 //        while (1) { ; }
 }

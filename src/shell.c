@@ -30,6 +30,7 @@ void run_shell() {
                 uart_putchar('[');
                 uart_puts(num);
                 uart_puts("] > ");
+                __asm__ __volatile__("wfi");
                 uart_gets(cmd_buf, sizeof(cmd_buf));
                 if (!strcmp(cmd_buf, "help")) {
                         help();

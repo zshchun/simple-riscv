@@ -21,6 +21,7 @@ char uart_getchar() {
         return UART_READ(RHR);
 }
 
+// #pragma GCC optimize ("align-functions=4")
 void uart_puts(char *s) {
         while (*s) {
                 uart_putchar(*s);
