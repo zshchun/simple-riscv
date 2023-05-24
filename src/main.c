@@ -17,10 +17,7 @@ int count = 0;
 #pragma GCC optimize ("align-functions=4")
 void trap_handler() {
 //        sched();
-//        count++;
-//        if (count < 30)
-                uart_putchar('.');
-//        while (1) { ; }
+        uart_putchar('.');
 }
 
 int main(int hart_id) {

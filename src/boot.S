@@ -21,24 +21,9 @@ init_bss:
         bne a3, a4, init_bss
 
 3:
-#        csrr t0, mstatus
-#        li t1, 6144
-#        not t1, t1
-#        and t0, t0, t1
-#        li t1, 2048
-#        or t0, t0, t1
-#        csrw mstatus, t0
-
-#        li t0, 0xffff
-#        csrw medeleg, t0
-
-#        la t0, 2f
-#        csrw mepc, t0
-
         li t0, 0x200bff8
         li t2, 0x2004000
         ld t1, 0(t0)
-#        li t3, 32768*300
         li t3, 10 * 1000 * 1000
         add t1, t1, t3
         sd t1, 0(t2)
@@ -47,23 +32,10 @@ init_bss:
 #        la t0, trap_handler
         csrw mtvec, t0
 
-#       li t0, 0x1800
-#       csrc mstatus, t0
-#       li t0, 0x802
-#       csrs mstatus, t0
-
         li t0, 128
-        # mie.mti
         csrrs zero, mie, t0
-#        csrr t0, mie
-#        li t1, 128
-#        or t0, t0, t1
-#        csrw mie, t0
         csrrs zero, mstatus, 8
-
-#        csrsi mstatus, 8
-
-        # mstatus.mie
+#        csrw mie, t0
 #        mret
 
 2:
@@ -92,53 +64,30 @@ trap_entry:
 
         jal trap_handler
 
-#        csrrs zero, mstatus, 0
-
 #         csrr t0, mepc
-# 
 #         lh t2, 0(t0)
 #         li t1, 3
 #         and t2, t2, t1
 #         beq t2, t1, 1f
 #         addi t0, t0, 0x2
 #         j 2f
-# 
 # 1:
 #         addi t0, t0, 0x4
 # 2:
 #         csrw mepc, t0
 
-
 #        csrr t0, mcause
-##        li t1, 128
 #        li t1, 0x8000000000000007
-##        and t0, t0, t1
-##        bgtz t0,  1f
 #        beq t0, t1, 1f
-
-#        blt t0, x0, 1f
-
-##        mret
-##        csrsi mstatus, 8
-
 #        j 2f
 
 1:
-#        csrr t0, mcause
-#        li t1, 128
-#        and t0, t0, t1
-#        beq t0, zero, 2f
-
         li a0, 0x200bff8
         li a2, 0x2004000
         ld a1, 0(a0)
         li a3, 10 * 1000 * 1000
-#        li a3, 32768*300
         add a1, a1, a3
         sd a1, 0(a2)
-
-#        li a0, 0
-#        csrw mip, a0
 
 #        li a0, 3
 #        csrwi mstatus.mpp, 3
@@ -151,7 +100,6 @@ trap_entry:
 #        csrci mstatus, 8
 
 2:
-
         ld  t6, 15*8(sp)
         ld  t5, 14*8(sp)
         ld  t4, 13*8(sp)
@@ -170,4 +118,3 @@ trap_entry:
         ld  ra, 0*8(sp)
         addi sp, sp, (17*8)
         mret
-
