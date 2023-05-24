@@ -30,14 +30,15 @@ void run_shell() {
                 uart_putchar('[');
                 uart_puts(num);
                 uart_puts("] > ");
+//                __asm__ __volatile__("wfi");
                 uart_gets(cmd_buf, sizeof(cmd_buf));
                 if (!strcmp(cmd_buf, "help")) {
                         help();
                 } else if (!strcmp(cmd_buf, "test")) {
                         test();
                 } else if (!memcmp(cmd_buf, "echo", sizeof("echo")-1)) {
-                        uart_puts(cmd_buf+5);
                         uart_putchar('\n');
+                        uart_puts(cmd_buf+5);
                 }
                 uart_putchar('\n');
         }

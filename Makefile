@@ -15,7 +15,7 @@ RUST_OBJS := $(addprefix $(OUT)/,$(notdir $(RUST_SRCS:%.rs=%.o)))
 ASM_SRCS := $(wildcard $(SRCDIR)/*.S)
 ASM_OBJS := $(addprefix $(OUT)/,$(notdir $(ASM_SRCS:%.S=%.o)))
 MACHINE := virt
-CPUS := 2
+CPUS := 1
 
 .PHONY: all build test debug shell FORCE
 
@@ -30,7 +30,7 @@ debug: build
 	qemu-system-riscv64 -M $(MACHINE) -smp $(CPUS) -m 256M -bios none -kernel $(OUT)/os.bin -nographic -serial mon:stdio -S -s
 
 gdb:
-	gdb-multiarch -ex 'file os.elf' -ex 'target remote localhost:1234'
+	gdb-multiarch -ex "file $(OUT)/os.elf" -ex 'target remote localhost:1234'
 
 dts:
 	qemu-system-riscv64 -M $(MACHINE) -M dumpdtb=$(MACHINE).dtb

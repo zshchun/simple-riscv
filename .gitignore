@@ -3,5 +3,8 @@
 *.elf
 *.dtb
 *.dts
+cscope.*
+tags
 out
 out/*
+.gdb_history
